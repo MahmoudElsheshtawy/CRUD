@@ -1,14 +1,14 @@
 const express = require("express");
 const controller = require("../controllers/courses.controller");
+// const { body } = require("express-validator");
+
 const { valadate } = require("../middlewares/valedation");
 const router = express.Router();
 
 router
   .route("/")
   .get(controller.GetAllCourses)
-  .post(valadate ,
-    controller.AddCourse
-  );
+  .post(valadate(),controller.AddCourse);
 
 router
   .route("/:id")

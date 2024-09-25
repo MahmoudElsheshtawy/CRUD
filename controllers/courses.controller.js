@@ -1,5 +1,5 @@
 let { courses } = require("../data/courses");
-// const { body, validationResult } = require("express-validator");
+const {  validationResult } = require("express-validator");
 
 const GetAllCourses = (req, res) => {
   res.json(courses);
@@ -16,10 +16,10 @@ const GetCourse = (req, res) => {
 
 const AddCourse = (req, res) => {
   console.log(req.body);
-  // const err = validationResult(req);
-  // if (!err.isEmpty()) {
-  //   return res.status(400).json({ errors: err.array() });
-  // }
+  const err = validationResult(req);
+  if (!err.isEmpty()) {
+    return res.status(400).json({ errors: err.array() });
+  }
   const course = { id: courses.length + 1, ...req.body };
   courses.push(course);
   res.status(201).json(course);
