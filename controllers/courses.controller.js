@@ -1,28 +1,43 @@
-let { courses } = require("../data/courses");
+// let { courses } = require("../data/courses");
 const {  validationResult } = require("express-validator");
+const Corse = require("../models/course.modle")
 
-const GetAllCourses = (req, res) => {
-  res.json(courses);
+
+
+
+
+
+const GetAllCourses =async (req, res) => {
+ const courses=await Corse.find();
+  
+  res.json(courses)
 };
 
-const GetCourse = (req, res) => {
-  const courseId = +req.params.id; //id of the course
-  const course = courses.find((c) => c.id === courseId); //find the course
+const GetCourse = async (req, res) => {
+  // const courseId = +req.params.id; //id of the course
+  // const course = courses.find((c) => c.id === courseId);
+  
+     const course = await Corse.findById(req.params.id);
+
   if (!course) {
-    return res.status(404).send("Course not found"); //send 404 if course not found
+    return res.status(404).send("Course not====== found"); 
   }
   res.json(course);
 };
 
-const AddCourse = (req, res) => {
+const AddCourse = async(req, res) => {
   console.log(req.body);
   const err = validationResult(req);
   if (!err.isEmpty()) {
     return res.status(400).json({ errors: err.array() });
   }
-  const course = { id: courses.length + 1, ...req.body };
-  courses.push(course);
-  res.status(201).json(course);
+  // const course = { id: courses.length + 1, ...req.body };
+  // courses.push(course);
+  const newcourse = new Corse(req.body);// cearate course
+  await newcourse.save() //save the course and send it back as a response if saved successfully
+  //
+
+  res.status(201).json(newcourse);
 };
 
 const UpdateCourse = (req, res) => {
