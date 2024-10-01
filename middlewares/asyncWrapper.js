@@ -1,9 +1,7 @@
-// const Status = require("../utils/Status");
-
-// module.exports = (asyncfn) => {
-//      return (req, res, next) => {
-//         asyncfn(req, res, next).catch((error) => {
-//          next(error); 
-// });
-//   };
-// };
+module.exports = (asyncFn) => {
+  return (req, res, next) => {
+    asyncFn(req, res, next).catch((error) => {
+      next(error);
+    });
+  };
+};
