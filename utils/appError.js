@@ -1,15 +1,28 @@
-class AppError extends Error{
-    constructor() {
-         super();
+// class AppError extends Error{
+//     constructor() {
+//          super();
        
+//     }
+//     cearte( message ,statusCode ,statusText ){
+//         this.message = message;
+//         this.statusCode = statusCode;
+//         this.statusText = statusText;
+    
+//        return this;
+//     }
+// }
+// module.exports = new AppError();
+class AppError extends Error {
+    constructor(){
+        super();
     }
-    cearte( message ,statusCode ,statusText ){
+
+    create(message, statusCode, statusText) {
         this.message = message;
         this.statusCode = statusCode;
         this.statusText = statusText;
-    
-       return this;
+        return this;
     }
 }
+
 module.exports = new AppError();
-// AppError.cearte()

@@ -19,7 +19,7 @@ const GetAllCourses = asyncWrapper(async (req, res) => {
 const GetCourse = asyncWrapper(async (req, res, next) => {
   const course = await Corse.findById(req.params.id);
   if (!course) {
-    const error = appError.cearte(
+    const error = appError.create(
       { courses: "course not found" },
       404,
       Status.FAIL
@@ -36,7 +36,7 @@ const AddCourse = asyncWrapper(async (req, res, next) => {
   console.log(req.body);
   const err = validationResult(req);
   if (!err.isEmpty()) {
-    const error = appError.cearte(err.array(), 400, Status.FAIL);
+    const error = appError.create(err.array(), 400, Status.FAIL);
     return next(error);
     // return res.status(400).json({ status: Status.FAIL, data: err.array() });
   }
@@ -48,14 +48,9 @@ const AddCourse = asyncWrapper(async (req, res, next) => {
 
 const UpdateCourse =asyncWrapper( async (req, res) => {
   const corseId = req.params.id;
-  // try {
   const updateCorse = await Corse.updateOne({ _id: corseId },{$set: { ...req.body },});
   res.status(200).json({ status: Status.SUCCESS, data: { course: updateCorse } });
-  // } catch (error) {
-  // res
-  // .status(500)/
-  // .json({ status: Status.ERROR, msg: { courses: error.message } });
-  // }
+
 })
 
 const DeleteCourse = asyncWrapper( async (req, res) => {
