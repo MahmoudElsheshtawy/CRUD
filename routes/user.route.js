@@ -1,13 +1,14 @@
 const express = require("express");
 
 const router = express.Router();
-const usercontroller =require("../controllers/users.controller")
+const usercontroller =require("../controllers/users.controller");
+const verifiyToken = require("../middlewares/verifiyToken");
 //get all users
 //register
 //login
 
 router.route("/")
-  .get(usercontroller.GetAllusers)
+  .get(verifiyToken,usercontroller.GetAllusers)
   
   
 router.route("/register")
@@ -17,3 +18,4 @@ router.route("/login")
   .post(usercontroller.Login)
 
 module.exports = router;
+

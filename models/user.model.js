@@ -1,3 +1,4 @@
+const { TokenExpiredError } = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const validator = require('validator');
 const userSchema = new mongoose.Schema({
@@ -21,5 +22,9 @@ const userSchema = new mongoose.Schema({
     required: true,
    
   },
+  token:{
+    type: String,
+ 
+  }
 });
 module.exports = mongoose.model("User", userSchema);

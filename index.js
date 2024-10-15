@@ -1,9 +1,12 @@
-const express = require("express");
-const app = express();
 require("dotenv").config();
+const express = require("express");
 const cors = require("cors");
+const app = express();
+
+
 const port = 3001;
 const Status = require("./utils/Status");
+
 
 
 
@@ -24,19 +27,17 @@ const UsersRouter  = require("./routes/user.route");
 
 app.use("/api/courses", CoursesRouter);
 app.use("/api/users", UsersRouter);
+
 app.all("*", (req, res, next) => {
   res.status(404).json({ message: " / Page not found" }); // 404 Not Found
 });
 // global error handler
 
-// app.use((error, req, res, next) => {
-//   res.status(error.statusCode||500).json({ status: error.statusText|| Status.ERROR, message: error.message ,code : error.statusCode || 500 , data: null });
-// });
 app.use((error, req, res, next) => {
   res.status(error.statusCode || 500).json({status: error.statusText || Status.ERROR, message: error.message, code: error.statusCode || 500, data: null});
 })
 
 
-app.listen(port, () => {
+app.listen(port,() => {
   console.log(`Example app listening on port ${port}`);
 });

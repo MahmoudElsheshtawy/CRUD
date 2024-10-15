@@ -1,11 +1,17 @@
-const { response } = require("express");
+
 const asyncWrapper = require("../middlewares/asyncWrapper");
 const User = require("../models/user.model");
 const Status = require("../utils/Status");
 const appError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+const generateJWT = require("../utils/generate.JWT");
+require("dotenv").config();
 
 const GetAllusers = asyncWrapper(async (req, res) => {
+ 
+  // console.log(req.header);
+  
   //pagenation
   const query = req.query;
   const limit = query.limit || 10; // default;
@@ -16,6 +22,8 @@ const GetAllusers = asyncWrapper(async (req, res) => {
     .limit(limit)
     .skip(skip);
 
+
+
   res.json({ status: Status.SUCCESS, data: { users } });
 });
 
@@ -25,6 +33,12 @@ const Register = asyncWrapper(async (req, res, next) => {
   // password haching
 
   const { fristName, lastName, email, password } = req.body;
+  const oldUser = await User.findOne({ email: email});
+
+  if(oldUser) {
+      const error = appError.create('user already exists', 400, Status.FAIL)
+      return next(error);
+  }
   const hashPassword = await bcrypt.hash(password, 10);
 
   const newuser = new User({
@@ -33,6 +47,10 @@ const Register = asyncWrapper(async (req, res, next) => {
     email,
     password: hashPassword,
   });
+
+const token = await generateJWT({email: newuser.email, id : newuser._id,})
+  newuser.token = token;
+
   await newuser.save();
   res.status(201).json({ status: Status.SUCCESS, data: { user: newuser } });
 });
@@ -51,9 +69,11 @@ const Login = asyncWrapper(async (req, res, next) => {
   const matchpassword = await bcrypt.compare(password, user.password);
 
   if (user && matchpassword) {
+    const token = await generateJWT({email: user.email, id : user._id,})
+  // newuser.token = token;
     return res.json({
       status: Status.SUCCESS,
-      data: { user: "loged in don~!" },
+      data: { token },
     });
   } else {
     const error = appError.create('something wrong', 500, Status.ERROR)
