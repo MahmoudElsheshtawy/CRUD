@@ -32,7 +32,7 @@ const Register = asyncWrapper(async (req, res, next) => {
 
   // password haching
 
-  const { fristName, lastName, email, password } = req.body;
+  const { fristName, lastName, email, password,role } = req.body;
   const oldUser = await User.findOne({ email: email});
 
   if(oldUser) {
@@ -46,9 +46,10 @@ const Register = asyncWrapper(async (req, res, next) => {
     lastName,
     email,
     password: hashPassword,
+    role,
   });
 
-const token = await generateJWT({email: newuser.email, id : newuser._id,})
+const token = await generateJWT({email: newuser.email, id : newuser._id,role: newuser.role})
   newuser.token = token;
 
   await newuser.save();
@@ -69,7 +70,7 @@ const Login = asyncWrapper(async (req, res, next) => {
   const matchpassword = await bcrypt.compare(password, user.password);
 
   if (user && matchpassword) {
-    const token = await generateJWT({email: user.email, id : user._id,})
+    const token = await generateJWT({email: user.email, id : user._id,role: user.role})
   // newuser.token = token;
     return res.json({
       status: Status.SUCCESS,

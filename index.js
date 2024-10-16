@@ -18,6 +18,7 @@ mongoose.connect(url).then(() => {
   console.log("Connected to the database!")
 });
 app.use(cors()); //for frontend
+
 app.use(express.json());
 // mongoose.connect(url).then(() => [console.log("Connected to the database!")]);
 
