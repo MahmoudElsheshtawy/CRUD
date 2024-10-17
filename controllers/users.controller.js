@@ -29,7 +29,7 @@ const GetAllusers = asyncWrapper(async (req, res) => {
 
 const Register = asyncWrapper(async (req, res, next) => {
   // console.log(req.body);
-
+  // return req.file ===>avatar
   // password haching
 
   const { fristName, lastName, email, password,role } = req.body;
@@ -47,6 +47,7 @@ const Register = asyncWrapper(async (req, res, next) => {
     email,
     password: hashPassword,
     role,
+    avatar: req.file.filename
   });
 
 const token = await generateJWT({email: newuser.email, id : newuser._id,role: newuser.role})
