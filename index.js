@@ -2,13 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-
+const path = require("path");
 
 const port = 3001;
 const Status = require("./utils/Status");
 
-
-
+//for img
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 
 
 const mongoose = require("mongoose");

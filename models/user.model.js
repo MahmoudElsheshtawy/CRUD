@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
   ,
   avatar:{
     type: String,
-    // default: 'default.jpg',
+    default: 'uploads/one.jpg',
     // validate: [validator.isURL, "Invalid URL"],
   }
   

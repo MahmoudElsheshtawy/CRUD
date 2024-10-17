@@ -28,7 +28,7 @@ const GetAllusers = asyncWrapper(async (req, res) => {
 });
 
 const Register = asyncWrapper(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   // password haching
 
